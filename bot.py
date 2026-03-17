@@ -55,7 +55,8 @@ async def handle_message(update, context):
         json=payload
     )
 
-    answer = response.json()["choices"][0]["message"]["content"]
+    resp = response.json()
+answer = resp.get("choices", [{}])[0].get("message", {}).get("content") or resp.get("output", {}).get("choices", [{}])[0].get("text", "Не удалось получить ответ")
     await update.message.reply_text(answer)
 
 app = ApplicationBuilder().token(BOT_TOKEN).build()
